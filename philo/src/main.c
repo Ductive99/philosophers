@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 08:09:15 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/03 11:10:01 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/09/03 11:57:35 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	main(int ac, char **av)
 {
-	t_data input;
+	t_data	input;
 
 	if (!parse(&input, ac, av))
 		return (-1);

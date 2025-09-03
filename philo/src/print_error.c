@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 08:48:15 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/03 11:38:42 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/09/03 11:57:04 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	load_error_message(char err[6][200]);
 
-int	print_error(error_code code, char *str)
+int	print_error(t_error_code code, char *str)
 {
 	char	err_msg[6][200];
 
