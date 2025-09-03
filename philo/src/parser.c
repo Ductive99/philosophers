@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 09:56:07 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/03 11:40:57 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/09/03 17:29:03 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	parse(t_data *arg, int argc, char **argv)
 		return (print_error(ERR_ARGC, NULL), 0);
 	if (!set_int(&arg->philosopher_count, argv[1]))
 		ret = print_error(-1, "philosopher_count\n");
-	else if (arg->philosopher_count > 999999)
+	else if (arg->philosopher_count > 256)
 		ret = print_error(ERR_PHILO_COUNT, NULL);
 	if (!set_int(&arg->time_to_die, argv[2]))
 		ret = print_error(-1, "time_to_die\n");
@@ -40,7 +40,6 @@ int	parse(t_data *arg, int argc, char **argv)
 
 static int	set_int(int *val, char *str)
 {
-	*val = 1000000;
 	if (!check_num(str))
 		return (print_error(ERR_INVALID_NUMBER, NULL), 0);
 	if (!check_int_overflow(str))

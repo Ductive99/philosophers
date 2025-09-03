@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 08:48:15 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/03 11:57:04 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/09/03 17:30:10 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,5 @@ static void	load_error_message(char err[6][200])
 		"Negative Numbers Don't Make Sense Error: ", 200);
 	ft_strncpy(err[ERR_PHILO_COUNT],
 		"Invalid Philosopher Count Error\n"
-		"Accepted Range: 1 -> 25916 (don't go that far though)\n", 200);
+		"\tAccepted Range: 1 -> 255 (included)\n", 200);
 }
