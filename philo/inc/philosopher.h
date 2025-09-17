@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 08:12:52 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/03 11:55:45 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/09/17 19:36:18 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,21 @@
 # define PHILOSOPHER_H
 
 # include "error.h"
+# include <pthread.h>
 # include <unistd.h>
+
+# define MAX_PHILOS 256
+
+typedef struct s_philosopher
+{
+	int				id;
+	int				meal_count;
+	int				last_meal_time;
+	pthread_t		thread;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
+	t_data			*table;
+}					t_philosopher;
 
 /**
  * t_data - input data structure
@@ -24,30 +38,29 @@
  * @time_to_eat: time it takes to eat
  * @time_to_sleep: time it takes to sleep
  * @max_meal_count: Optional input of max meals to stop the program.
+ * @philos: array of philosopher data structure
+ * @print_mutex: mutex to handle printing philosopher status
  */
 typedef struct s_data
 {
-	int	philosopher_count;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	max_meal_count;
-}		t_data;
+	int				philosopher_count;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				max_meal_count;
+	t_philosopher	philos[MAX_PHILOS];
+	pthread_mutex_t	forks[MAX_PHILOS];
+	pthread_t		waiter;
+	pthread_mutex_t	print_mutex;
+}					t_data;
 
-typedef struct s_philosopher
-{
-	int	id;
-	int	meal_count;
-	int	last_meal_time;
-}		t_philosopher;
-
-int		parse(t_data *arg, int argc, char **argv);
+int					parse(t_data *arg, int argc, char **argv);
 
 // Utils
-void	ft_putstr_fd(char *s, int fd);
-char	*ft_strncpy(char *dest, const char *src, size_t n);
-int		ft_atoi(const char *str);
-int		check_int_overflow(char *str);
-int		check_num(char *str);
+void				ft_putstr_fd(char *s, int fd);
+char				*ft_strncpy(char *dest, const char *src, size_t n);
+int					ft_atoi(const char *str);
+int					check_int_overflow(char *str);
+int					check_num(char *str);
 
 #endif /* PHILOSPHER_H */
