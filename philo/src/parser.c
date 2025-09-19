@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 09:56:07 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/03 17:29:03 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/09/19 03:18:55 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	parse(t_data *arg, int argc, char **argv)
 	int	ret;
 
 	ret = 1;
+	arg->max_meal_count = -1;
 	if (argc != 5 && argc != 6)
 		return (print_error(ERR_ARGC, NULL), 0);
 	if (!set_int(&arg->philosopher_count, argv[1]))
@@ -33,8 +34,6 @@ int	parse(t_data *arg, int argc, char **argv)
 		ret = print_error(-1, "time_to_sleep\n");
 	if (argc == 6 && !set_int(&arg->max_meal_count, argv[5]))
 		ret = print_error(-1, "max_meal_count\n");
-	else
-		arg->max_meal_count = -1;
 	return (ret);
 }
 

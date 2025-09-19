@@ -3,14 +3,17 @@ NAME = philo
 OBJDIR = build
 INCDIR = inc
 
-SRCS = src/print_error.c \
-	src/parser.c \
+SRCS = src/parser.c \
+	src/print_error.c \
 	src/main.c \
+	src/routine.c \
+	src/print_status.c \
 	utils/check_int_overflow.c \
+	utils/check_num.c \
+	utils/ft_atoi.c \
 	utils/ft_putstr_fd.c \
 	utils/ft_strncpy.c \
-	utils/check_num.c \
-	utils/ft_atoi.c
+	utils/time.c \
 
 OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
 
