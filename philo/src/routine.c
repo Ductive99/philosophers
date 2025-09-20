@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 20:02:05 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/20 15:56:50 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/09/20 16:36:47 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,16 @@ void    *philosopher_routine(void *arg)
     {
         // Thinking
         print_status(philo->table, philo->id, THINKING);
-
+        
         // Take forks
-        pthread_mutex_lock(philo->left_fork);
-        print_status(philo->table, philo->id, TAKING_FORK);
-        pthread_mutex_lock(philo->right_fork);
-        print_status(philo->table, philo->id, TAKING_FORK);
-
+        take_forks(philo);
+        
         // Eat
         eat(philo);
         
         // Sleep
         sleepy(philo);
-
+        
         usleep(1000);
         if (philo->table->simulation_over)
             break ;
@@ -65,4 +62,22 @@ void    sleepy(t_philosopher *philo)
         sleep += 1;
     }
     // usleep(philo->table->time_to_sleep * 1000);
+}
+
+void    take_forks(t_philosopher *philo)
+{
+    if (philo->id % 2)
+    {
+        pthread_mutex_lock(philo->right_fork);
+        print_status(philo->table, philo->id, TAKING_FORK);
+        pthread_mutex_lock(philo->left_fork);
+        print_status(philo->table, philo->id, TAKING_FORK);
+    }
+    else
+    {
+        pthread_mutex_lock(philo->left_fork);
+        print_status(philo->table, philo->id, TAKING_FORK);
+        pthread_mutex_lock(philo->right_fork);
+        print_status(philo->table, philo->id, TAKING_FORK);
+    }
 }
