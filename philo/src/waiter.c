@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 02:12:42 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/19 21:08:05 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/09/20 16:20:51 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	*waiter_routine(void *arg)
 		}
 		if (enough_meals_counter == data->philosopher_count)
 			return (data->simulation_over = 1, NULL);
-		usleep(1000);
+		usleep(100);
 	}
 	return (NULL);
 }

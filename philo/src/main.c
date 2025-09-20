@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 08:09:15 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/19 21:17:52 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/09/20 16:02:55 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	init_philosopher(t_data *data)
 	{
 		data->philos[i].id = i + 1;
 		data->philos[i].meal_count = 0;
-		data->philos[i].last_meal_time = 0;
+		data->philos[i].last_meal_time = data->simulation_start_time;
 		data->simulation_over = 0;
 		data->philos[i].left_fork = &data->forks[i];
 		data->philos[i].right_fork = &data->forks[(i + 1)
