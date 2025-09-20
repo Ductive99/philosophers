@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 08:12:52 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/19 03:28:30 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/09/19 05:13:58 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ struct							s_data
 	pthread_mutex_t				forks[MAX_PHILOS];
 	pthread_t					waiter;
 	pthread_mutex_t				print_mutex;
+	int							simulation_over;
 };
 
 typedef enum e_status
@@ -72,6 +73,9 @@ typedef enum e_status
 
 void							*philosopher_routine(void *arg);
 void							*waiter_routine(void *arg);
+
+void							eat(t_philosopher *philo);
+void							sleepy(t_philosopher *philo);
 
 void							print_status(t_data *data, int philo_id,
 									t_status status);

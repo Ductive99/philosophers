@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 08:09:15 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/19 03:25:44 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/09/19 21:17:52 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@ int	main(int ac, char **av)
 	if (!init_philosopher(&data))
 		return (1);
 	i = -1;
+	pthread_create(&data.waiter, NULL, waiter_routine, &data);
 	while (++i < data.philosopher_count)
 		pthread_join(data.philos[i].thread, NULL);
+	pthread_join(data.waiter, NULL);
 	i = -1;
 	while (++i < data.philosopher_count)
 		pthread_mutex_destroy(&data.forks[i]);
@@ -50,6 +52,7 @@ int	init_philosopher(t_data *data)
 		data->philos[i].id = i + 1;
 		data->philos[i].meal_count = 0;
 		data->philos[i].last_meal_time = 0;
+		data->simulation_over = 0;
 		data->philos[i].left_fork = &data->forks[i];
 		data->philos[i].right_fork = &data->forks[(i + 1)
 			% data->philosopher_count];

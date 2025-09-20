@@ -7,6 +7,7 @@ SRCS = src/parser.c \
 	src/print_error.c \
 	src/main.c \
 	src/routine.c \
+	src/waiter.c \
 	src/print_status.c \
 	utils/check_int_overflow.c \
 	utils/check_num.c \
