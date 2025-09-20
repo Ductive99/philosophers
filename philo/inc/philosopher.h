@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 08:12:52 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/20 16:34:31 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/09/20 19:17:12 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ typedef enum e_status
 void							*philosopher_routine(void *arg);
 void							*waiter_routine(void *arg);
 
-void							eat(t_philosopher *philo);
-void							sleepy(t_philosopher *philo);
+int								eat(t_philosopher *philo);
+int								sleepy(t_philosopher *philo);
 void    						take_forks(t_philosopher *philo);
 
 void							print_status(t_data *data, int philo_id,
