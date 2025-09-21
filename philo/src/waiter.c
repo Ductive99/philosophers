@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 02:12:42 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/21 04:08:30 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/09/21 04:16:17 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	*waiter_routine(void *arg)
 			if (fast_time > (uint64_t)data->time_to_die)
 				return (print_status(data, i + 1, DIED),
 					data->simulation_over = 1, NULL);
-			if (data->max_meal_count <= data->philos[i].meal_count)
+			if (data->max_meal_count > 0
+				&& data->max_meal_count <= data->philos[i].meal_count)
 				enough_meals_counter++;
 		}
 		if (enough_meals_counter == data->philosopher_count)
