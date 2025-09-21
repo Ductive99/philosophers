@@ -6,27 +6,27 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 02:40:14 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/20 16:11:44 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/09/21 04:38:40 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-void print_status(t_data *data, int philo_id, t_status status)
+void	print_status(t_data *data, int philo_id, t_status status)
 {
-    uint64_t    currenttime;
+	uint64_t	currenttime;
 
-    currenttime = get_time_in_ms() - data->simulation_start_time;
-    pthread_mutex_lock(&data->print_mutex);
-    if (status == THINKING && !data->simulation_over)
-        printf("%lu %d is thinking\n", currenttime, philo_id);
-    else if (status == EATING && !data->simulation_over)
-        printf("%lu %d is eating\n", currenttime, philo_id);
-    else if (status == SLEEPING && !data->simulation_over)
-        printf("%lu %d is sleeping\n", currenttime, philo_id);
-    else if (status == TAKING_FORK && !data->simulation_over)
-        printf("%lu %d has taken a fork\n", currenttime, philo_id);
-    else if (status == DIED)
-        printf("%lu %d died\n", currenttime, philo_id);
-    pthread_mutex_unlock(&data->print_mutex);
+	currenttime = get_time_in_ms() - data->simulation_start_time;
+	pthread_mutex_lock(&data->print_mutex);
+	if (status == THINKING && !data->simulation_over)
+		printf("%lu %d is thinking\n", currenttime, philo_id);
+	else if (status == EATING && !data->simulation_over)
+		printf("%lu %d is eating\n", currenttime, philo_id);
+	else if (status == SLEEPING && !data->simulation_over)
+		printf("%lu %d is sleeping\n", currenttime, philo_id);
+	else if (status == TAKING_FORK && !data->simulation_over)
+		printf("%lu %d has taken a fork\n", currenttime, philo_id);
+	else if (status == DIED)
+		printf("%lu %d died\n", currenttime, philo_id);
+	pthread_mutex_unlock(&data->print_mutex);
 }

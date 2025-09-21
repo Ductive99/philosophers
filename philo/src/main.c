@@ -6,11 +6,12 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 08:09:15 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/20 16:02:55 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/09/21 04:47:47 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
+#include <string.h>
 
 int	init_philosopher(t_data *data);
 
@@ -59,10 +60,7 @@ int	init_philosopher(t_data *data)
 		data->philos[i].table = data;
 		if (pthread_create(&data->philos[i].thread, NULL, philosopher_routine,
 				&data->philos[i]) != 0)
-		{
-			ft_putstr_fd("Failed to create philosopher thread", 2);
-			return (0);
-		}
+			return (ft_putstr_fd("Failed to create philosopher thread", 2), 0);
 	}
 	return (1);
 }
