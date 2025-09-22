@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 08:09:15 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/21 04:47:47 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/09/22 20:09:37 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	main(int ac, char **av)
 		return (-1 * (data.max_meal_count != 0));
 	if (pthread_mutex_init(&data.print_mutex, NULL) != 0)
 		return (ft_putstr_fd("Failed to create print mutex\n", 2), 1);
+	data.simulation_over = 0;
 	if (!init_philosopher(&data))
 		return (1);
 	i = -1;
@@ -46,6 +47,8 @@ int	init_philosopher(t_data *data)
 	while (++i < data->philosopher_count)
 		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
 			return (ft_putstr_fd("Failed to create fork mutex", 2), 0);
+	if (pthread_mutex_init(&data->sim_status_mutex, NULL) != 0)
+		return (ft_putstr_fd("Failed to create fork mutex", 2), 0);
 	i = -1;
 	data->simulation_start_time = get_time_in_ms();
 	while (++i < data->philosopher_count)

@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 08:12:52 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/21 04:37:39 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/09/22 08:52:39 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ struct							s_data
 	pthread_mutex_t				forks[MAX_PHILOS];
 	pthread_t					waiter;
 	pthread_mutex_t				print_mutex;
-	volatile int				simulation_over;
+	pthread_mutex_t				sim_status_mutex;
+	int							simulation_over;
 };
 
 typedef enum e_status
