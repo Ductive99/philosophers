@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 08:12:52 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/22 08:52:39 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/09/23 10:09:02 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ struct							s_philosopher
 	pthread_t					thread;
 	pthread_mutex_t				*left_fork;
 	pthread_mutex_t				*right_fork;
+	pthread_mutex_t				data_mutex;
 	t_data						*table;
 };
 
@@ -77,7 +78,8 @@ void							*waiter_routine(void *arg);
 
 int								eat(t_philosopher *philo);
 int								sleepy(t_philosopher *philo);
-void							take_forks(t_philosopher *philo);
+void							take_forks(t_philosopher *philo,
+									uint64_t fork_start);
 
 void							print_status(t_data *data, int philo_id,
 									t_status status);

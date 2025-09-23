@@ -6,14 +6,15 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 08:09:15 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/22 20:09:37 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/09/23 10:17:02 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 #include <string.h>
 
-int	init_philosopher(t_data *data);
+static int	init_philosopher(t_data *data);
+static void	set_fork(t_philosopher *philo);
 
 int	main(int ac, char **av)
 {
@@ -22,7 +23,8 @@ int	main(int ac, char **av)
 
 	if (parse(&data, ac, av) == -1 || data.max_meal_count == 0)
 		return (-1 * (data.max_meal_count != 0));
-	if (pthread_mutex_init(&data.print_mutex, NULL) != 0)
+	if (pthread_mutex_init(&data.print_mutex, NULL) != 0
+		|| pthread_mutex_init(&data.sim_status_mutex, NULL) != 0)
 		return (ft_putstr_fd("Failed to create print mutex\n", 2), 1);
 	data.simulation_over = 0;
 	if (!init_philosopher(&data))
@@ -32,38 +34,59 @@ int	main(int ac, char **av)
 	while (++i < data.philosopher_count)
 		pthread_join(data.philos[i].thread, NULL);
 	pthread_join(data.waiter, NULL);
+	usleep(10000);
 	i = -1;
 	while (++i < data.philosopher_count)
+	{
 		pthread_mutex_destroy(&data.forks[i]);
-	pthread_mutex_destroy(&data.print_mutex);
-	return (0);
+		pthread_mutex_destroy(&data.philos[i].data_mutex);
+	}
+	pthread_mutex_destroy(&data.sim_status_mutex);
+	return (pthread_mutex_destroy(&data.print_mutex), 0);
 }
 
-int	init_philosopher(t_data *data)
+static int	init_philosopher(t_data *data)
 {
 	int	i;
 
 	i = -1;
-	while (++i < data->philosopher_count)
-		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
-			return (ft_putstr_fd("Failed to create fork mutex", 2), 0);
-	if (pthread_mutex_init(&data->sim_status_mutex, NULL) != 0)
-		return (ft_putstr_fd("Failed to create fork mutex", 2), 0);
-	i = -1;
 	data->simulation_start_time = get_time_in_ms();
+	while (++i < data->philosopher_count)
+		if (pthread_mutex_init(&data->forks[i], NULL) != 0
+			|| pthread_mutex_init(&data->philos[i].data_mutex, NULL) != 0)
+			return (ft_putstr_fd("Failed to create fork mutex", 2), 0);
+	i = -1;
 	while (++i < data->philosopher_count)
 	{
 		data->philos[i].id = i + 1;
 		data->philos[i].meal_count = 0;
 		data->philos[i].last_meal_time = data->simulation_start_time;
-		data->simulation_over = 0;
-		data->philos[i].left_fork = &data->forks[i];
-		data->philos[i].right_fork = &data->forks[(i + 1)
-			% data->philosopher_count];
 		data->philos[i].table = data;
+		set_fork(&data->philos[i]);
 		if (pthread_create(&data->philos[i].thread, NULL, philosopher_routine,
 				&data->philos[i]) != 0)
 			return (ft_putstr_fd("Failed to create philosopher thread", 2), 0);
 	}
 	return (1);
+}
+
+static void	set_fork(t_philosopher *philo)
+{
+	int	fork1;
+	int	fork2;
+	int	i;
+
+	fork1 = philo->id - 1;
+	fork2 = philo->id % philo->table->philosopher_count;
+	i = philo->id - 1;
+	if (fork1 < fork2)
+	{
+		philo->left_fork = &philo->table->forks[fork1];
+		philo->right_fork = &philo->table->forks[fork2];
+	}
+	else
+	{
+		philo->left_fork = &philo->table->forks[fork2];
+		philo->right_fork = &philo->table->forks[fork1];
+	}
 }
