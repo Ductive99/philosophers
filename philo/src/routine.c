@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 20:02:05 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/23 10:08:48 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/10/06 04:44:18 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@ void	*philosopher_routine(void *arg)
 		if (over)
 			break ;
 		print_status(philo->table, philo->id, THINKING);
-		take_forks(philo, get_time_in_ms());
-		if (!(eat(philo) && sleepy(philo)))
-			break ;
+		if (take_forks(philo, get_time_in_ms()))
+		{
+			if (!(eat(philo) && sleepy(philo)))
+				break ;
+		}
 		usleep(1000);
 	}
 	return (NULL);
@@ -71,7 +73,7 @@ int	sleepy(t_philosopher *philo)
 	return (1);
 }
 
-void	take_forks(t_philosopher *philo, uint64_t fork_start)
+int	take_forks(t_philosopher *philo, uint64_t fork_start)
 {
 	if (philo->table->philosopher_count == 1)
 	{
@@ -81,7 +83,7 @@ void	take_forks(t_philosopher *philo, uint64_t fork_start)
 			- fork_start < (uint64_t)philo->table->time_to_die)
 			usleep(100);
 		pthread_mutex_unlock(philo->left_fork);
-		return ;
+		return (0);
 	}
 	else if (philo->id % 2)
 	{
@@ -97,4 +99,5 @@ void	take_forks(t_philosopher *philo, uint64_t fork_start)
 		pthread_mutex_lock(philo->right_fork);
 		print_status(philo->table, philo->id, TAKING_FORK);
 	}
+	return (1);
 }
