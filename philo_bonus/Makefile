@@ -7,19 +7,22 @@ SRCS = src/parser.c \
 	src/print_error.c \
 	src/main.c \
 	src/routine.c \
-	src/waiter.c \
-	src/print_status.c \
+	src/routine2.c \
+	src/process.c \
+	src/semaphore.c \
 	utils/check_int_overflow.c \
 	utils/check_num.c \
 	utils/ft_atoi.c \
 	utils/ft_putstr_fd.c \
 	utils/ft_strncpy.c \
 	utils/time.c \
+	utils/print_status.c \
+	utils/ft_usleep.c
 
 OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g -I$(INCDIR)
+CFLAGS = -Wall -Werror -Wextra -g -I$(INCDIR) -pthread
 
 all: $(NAME)
 

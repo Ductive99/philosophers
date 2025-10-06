@@ -1,21 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time.c                                             :+:      :+:    :+:   */
+/*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/19 02:31:45 by esouhail          #+#    #+#             */
-/*   Updated: 2025/10/06 04:09:44 by esouhail         ###   ########.fr       */
+/*   Created: 2025/10/05 19:31:18 by esouhail          #+#    #+#             */
+/*   Updated: 2025/10/06 01:30:41 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
+#include <signal.h>
 
-uint64_t	get_time_in_ms(void)
+int	kill_all_processes(pid_t *pids, int count)
 {
-	struct timeval	tv;
+	int	i;
 
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	i = 0;
+	while (i < count)
+	{
+		if (pids[i] > 0)
+			kill(pids[i], SIGTERM);
+		i++;
+	}
+	return (0);
+}
+
+int	cleanup_and_exit(t_data *data, int exit_code)
+{
+	cleanup_semaphores(data);
+	return (exit_code);
 }
