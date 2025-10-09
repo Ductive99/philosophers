@@ -6,31 +6,39 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 20:02:05 by esouhail          #+#    #+#             */
-/*   Updated: 2025/10/06 04:44:18 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/10/09 02:32:31 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
+static int	check_simulation_over(t_philosopher *philo)
+{
+	int	over;
+
+	pthread_mutex_lock(&philo->table->sim_status_mutex);
+	over = philo->table->simulation_over;
+	pthread_mutex_unlock(&philo->table->sim_status_mutex);
+	return (over);
+}
+
 void	*philosopher_routine(void *arg)
 {
 	t_philosopher	*philo;
-	int				over;
 
 	philo = (t_philosopher *)arg;
 	while (1)
 	{
-		pthread_mutex_lock(&philo->table->sim_status_mutex);
-		over = philo->table->simulation_over;
-		pthread_mutex_unlock(&philo->table->sim_status_mutex);
-		if (over)
+		if (check_simulation_over(philo))
 			break ;
 		print_status(philo->table, philo->id, THINKING);
 		if (take_forks(philo, get_time_in_ms()))
 		{
-			if (!(eat(philo) && sleepy(philo)))
+			if (!eat(philo) || !sleepy(philo))
 				break ;
 		}
+		else if (check_simulation_over(philo))
+			break ;
 		usleep(1000);
 	}
 	return (NULL);
@@ -60,13 +68,16 @@ int	eat(t_philosopher *philo)
 int	sleepy(t_philosopher *philo)
 {
 	uint64_t	start;
+	int			over;
 
 	start = get_time_in_ms();
 	print_status(philo->table, philo->id, SLEEPING);
 	while ((get_time_in_ms() - start) < (uint64_t)philo->table->time_to_sleep)
 	{
-		if (get_time_in_ms()
-			- philo->last_meal_time >= (uint64_t)philo->table->time_to_die)
+		pthread_mutex_lock(&philo->table->sim_status_mutex);
+		over = philo->table->simulation_over;
+		pthread_mutex_unlock(&philo->table->sim_status_mutex);
+		if (over)
 			return (0);
 		usleep(100);
 	}

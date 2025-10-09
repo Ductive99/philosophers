@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 02:40:14 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/22 20:09:47 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/10/09 02:26:05 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,16 @@ void	print_status(t_data *data, int philo_id, t_status status)
 	uint64_t	currenttime;
 	int			over;
 
-	currenttime = get_time_in_ms() - data->simulation_start_time;
-	pthread_mutex_lock(&data->print_mutex);
-	if (status == DIED)
-	{
-		printf("%lu %d died\n", currenttime, philo_id);
-		return ;
-	}
 	pthread_mutex_lock(&data->sim_status_mutex);
 	over = data->simulation_over;
 	pthread_mutex_unlock(&data->sim_status_mutex);
-	if (over == 1)
+	if (over == 1 && status != DIED)
 		return ;
-	if (status == THINKING)
+	pthread_mutex_lock(&data->print_mutex);
+	currenttime = get_time_in_ms() - data->simulation_start_time;
+	if (status == DIED)
+		printf("%lu %d died\n", currenttime, philo_id);
+	else if (status == THINKING)
 		printf("%lu %d is thinking\n", currenttime, philo_id);
 	else if (status == EATING)
 		printf("%lu %d is eating\n", currenttime, philo_id);

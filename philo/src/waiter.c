@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 02:12:42 by esouhail          #+#    #+#             */
-/*   Updated: 2025/09/23 10:03:19 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/10/09 02:25:59 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,10 @@ void	*waiter_routine(void *arg)
 
 static void	*change_status(t_data *data, int philo_id, int isdead)
 {
-	if (isdead)
-		print_status(data, philo_id, DIED);
 	pthread_mutex_lock(&data->sim_status_mutex);
 	data->simulation_over = 1;
 	pthread_mutex_unlock(&data->sim_status_mutex);
+	if (isdead)
+		print_status(data, philo_id, DIED);
 	return (NULL);
 }
