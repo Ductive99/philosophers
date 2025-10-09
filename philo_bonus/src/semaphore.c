@@ -6,15 +6,15 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 18:16:27 by esouhail          #+#    #+#             */
-/*   Updated: 2025/10/09 05:22:32 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/10/09 05:50:33 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-int init_semaphores(t_data *data)
+int	init_semaphores(t_data *data)
 {
-	int c;
+	int	c;
 
 	c = data->philosopher_count;
 	sem_unlink(SEM_FORKS_NAME);
@@ -36,7 +36,7 @@ int init_semaphores(t_data *data)
 	return (0);
 }
 
-void cleanup_semaphores(t_data *data)
+void	cleanup_semaphores(t_data *data)
 {
 	sem_close(data->forks);
 	sem_close(data->write);
@@ -48,7 +48,7 @@ void cleanup_semaphores(t_data *data)
 	sem_unlink(SEM_DEATH_NAME);
 }
 
-void close_semaphores(t_data *data)
+void	close_semaphores(t_data *data)
 {
 	sem_close(data->forks);
 	sem_close(data->write);

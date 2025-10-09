@@ -6,13 +6,13 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 21:39:44 by esouhail          #+#    #+#             */
-/*   Updated: 2025/10/09 05:33:14 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/10/09 05:50:19 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-static void take_forks(t_philo *philo)
+static void	take_forks(t_philo *philo)
 {
 	sem_wait(philo->table->room);
 	sem_wait(philo->table->forks);
@@ -21,9 +21,9 @@ static void take_forks(t_philo *philo)
 	print_status(philo, "has taken a fork");
 }
 
-static void eat_and_sleep(t_philo *philo)
+static void	eat_and_sleep(t_philo *philo)
 {
-	uint64_t current_time;
+	uint64_t	current_time;
 
 	current_time = get_time_in_ms();
 	__atomic_store_n(&philo->last_meal_time, current_time, __ATOMIC_SEQ_CST);
@@ -33,7 +33,8 @@ static void eat_and_sleep(t_philo *philo)
 	sem_post(philo->table->forks);
 	sem_post(philo->table->forks);
 	sem_post(philo->table->room);
-	if (philo->table->max_meal_count != -1 && philo->meal_count >= philo->table->max_meal_count)
+	if (philo->table->max_meal_count != -1
+		&& philo->meal_count >= philo->table->max_meal_count)
 	{
 		close_semaphores(philo->table);
 		exit(0);
@@ -42,10 +43,10 @@ static void eat_and_sleep(t_philo *philo)
 	usleep(philo->table->time_to_sleep * 1000);
 }
 
-void philosopher_routine(t_data *data, int id)
+void	philosopher_routine(t_data *data, int id)
 {
-	t_philo philo;
-	pthread_t monitor;
+	t_philo		philo;
+	pthread_t	monitor;
 
 	philo.id = id;
 	philo.table = data;
