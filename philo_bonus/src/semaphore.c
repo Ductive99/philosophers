@@ -27,7 +27,7 @@ int	init_semaphores(t_data *data)
 	data->write = sem_open(SEM_WRITE_NAME, O_CREAT, 0644, 1);
 	if (data->write == SEM_FAILED)
 		return (-1);
-	data->room = sem_open(SEM_ROOM_NAME, O_CREAT, 0644, c / 2);
+	data->room = sem_open(SEM_ROOM_NAME, O_CREAT, 0644, c - 1);
 	if (data->room == SEM_FAILED)
 		return (-1);
 	data->death = sem_open(SEM_DEATH_NAME, O_CREAT, 0644, 0);

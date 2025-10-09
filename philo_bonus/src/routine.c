@@ -16,30 +16,44 @@ static void	release_forks_and_die(t_data *data, t_philo *philo, int fork_count)
 {
 	while (fork_count-- > 0)
 		sem_post(data->forks);
+	sem_post(data->room);
 	die_and_exit(philo);
 }
 
 static void	take_forks(t_philo *philo)
 {
+	if (should_die(philo))
+		die_and_exit(philo);
+	sem_wait(philo->table->room);
+	if (should_die(philo))
+	{
+		sem_post(philo->table->room);
+		die_and_exit(philo);
+	}
 	sem_wait(philo->table->forks);
 	print_status(philo, "has taken a fork");
 	if (should_die(philo))
-		release_forks_and_die(philo->table, philo, 1);
+	{
+		sem_post(philo->table->forks);
+		sem_post(philo->table->room);
+		die_and_exit(philo);
+	}
 	sem_wait(philo->table->forks);
 	print_status(philo, "has taken a fork");
-	if (should_die(philo))
-		release_forks_and_die(philo->table, philo, 2);
 }
 
 static void	eat_and_sleep(t_philo *philo)
 {
 	print_status(philo, "is eating");
+	if (should_die(philo))
+		release_forks_and_die(philo->table, philo, 2);
 	philo->last_meal_time = get_time_in_ms();
 	if (ft_usleep_with_death_check(philo, philo->table->time_to_eat) == 1)
 		release_forks_and_die(philo->table, philo, 2);
 	philo->meal_count++;
 	sem_post(philo->table->forks);
 	sem_post(philo->table->forks);
+	sem_post(philo->table->room);
 	if (philo->table->max_meal_count != -1
 		&& philo->meal_count >= philo->table->max_meal_count)
 	{

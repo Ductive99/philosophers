@@ -6,7 +6,7 @@
 /*   By: esouhail <esouhail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 04:26:06 by esouhail          #+#    #+#             */
-/*   Updated: 2025/10/06 04:28:39 by esouhail         ###   ########.fr       */
+/*   Updated: 2025/10/09 03:07:45 by esouhail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,17 @@ int	should_die(t_philo *philo)
 
 void	die_and_exit(t_philo *philo)
 {
+	if (sem_trywait(philo->table->death) == 0)
+	{
+		sem_post(philo->table->death);
+		close_semaphores(philo->table);
+		exit(1);
+	}
+	sem_post(philo->table->death);
 	sem_wait(philo->table->write);
 	printf("%ld %d died\n", get_time_in_ms()
 		- philo->table->simulation_start_time, philo->id);
 	sem_post(philo->table->write);
-	sem_post(philo->table->death);
 	close_semaphores(philo->table);
 	exit(1);
 }
